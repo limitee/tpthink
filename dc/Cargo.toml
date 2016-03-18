@@ -1,0 +1,17 @@
+[package]
+name = "dc"
+version = "0.0.1"
+authors = ["bosilan"]
+
+[dependencies]
+rustc-serialize = "0.3.16"
+postgres = "0.11.3"
+time = "0.1.32"
+regex = "0.1.41"
+chrono = "0.2.20"
+rand = "0.3.11"
+log = "0.3.5"
+
+lazy_static = { git = "https://github.com/rust-lang-nursery/lazy-static.rs.git" }
+easydb = {version="0.0.1", path="../../../easydb"}
+easy_util = {version="0.0.1", path="../../../easy_util"}

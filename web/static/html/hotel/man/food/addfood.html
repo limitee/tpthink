@@ -1,0 +1,83 @@
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+                <h4 class="modal-title">
+                    选择一张图片
+                </h4>
+            </div>
+            <div class="modal-body"  id="myModalBody" style="height:480px;overflow-y: scroll">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="select" type="button">
+                    选择
+                </button>
+                <button class="btn btn-primary" data-dismiss="modal" type="button">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid no_space">
+<div class="row">
+<div class="col-md-6">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="name">
+            名称
+            </label>
+            <div class="col-md-10">
+                <input id="name" class="form-control" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="price">
+                价格
+            </label>
+            <div class="col-md-10">
+                <input id="price" class="form-control" type="text" placeholder="可保留两位小数,单位（元）,如19.99"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="group_id">分组</label>
+            <div class="col-sm-10">
+                <select id="group_id">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="group_id">图片</label>
+            <div class="col-sm-10">
+                <button class="btn btn-default" id="choose-button" type="button" data-toggle="modal" data-target="#myModal">选择文件</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <img id="file_id" width="120px" height="120px"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="des">描述</label>
+            <div class="col-sm-10">
+                <textarea id="des" style="width:400px; height:80px;"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button id="sub" class="btn btn-default" data-loading-text="处理中.." type="button">
+                创建
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+

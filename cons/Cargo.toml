@@ -1,0 +1,8 @@
+[package]
+name = "cons"
+version = "0.0.1"
+authors = ["bosilan"]
+
+[dependencies]
+lazy_static = { git = "https://github.com/rust-lang-nursery/lazy-static.rs.git" }
+

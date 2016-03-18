@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href="./css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="./css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="./css/site.css" rel="stylesheet"/>
+
+    <!--[if lt IE 9]>
+    <script src="./js/html5shiv.min.js"></script>
+    <script src="./js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<div class="navbar-top navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="./man_manager.html">首页</a>
+        </div>
+    </div>
+</div>
+<div class="container" style="margin-top: 62px;">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title" style="text-align:center">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_customer" aria-expanded="true" aria-controls="collapse_customer">
+                                客户管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse in" id="collapse_customer" role="tabpanel">
+                        <div class="panel-body" style="text-align:center">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation">
+                                    <a id="hotel_list" href="#">
+                                        餐馆管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title" style="text-align:center">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_room" aria-expanded="false" aria-controls="collapse_room">
+                                房间管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapse_room" role="tabpanel">
+                        <div class="panel-body" style="text-align:center">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation">
+                                    <a id="add_room_type" href="#">
+                                        新增类型
+                                    </a>
+                                </li>
+                                <li role="presentation">
+                                    <a id="room_type" href="#">
+                                        房间类型
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title" style="text-align:center">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                用户管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse in" id="collapse1" role="tabpanel" aria-labelledby="myInfo">
+                        <div class="panel-body" style="text-align:center">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation">
+                                    <a id="customer" href="#">
+                                        账户管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title" style="text-align:center">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                存储管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapse2" role="tabpanel" aria-labelledby="myInfo">
+                        <div class="panel-body" style="text-align:center">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation">
+                                    <a id="upload_files" href="#">
+                                        上传文件
+                                    </a>
+                                </li>
+                                <li role="presentation">
+                                    <a id="my_files" href="#">
+                                        我的文件
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title" style="text-align:center">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                内容管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapse3" role="tabpanel">
+                        <div class="panel-body" style="text-align:center">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation">
+                                    <a id="save_info" href="#">
+                                        优惠信息 
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+        <div id="content" class="col-md-10 no_space">
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./js/cryptojs/rollups/md5.js"></script>
+<script type="text/javascript" src="./js/cryptojs/components/enc-base64.js"></script>
+<script type="text/javascript" src="./js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/site.js"></script>
+
+<script type="text/javascript">
+    CurSite.get_js("man/manager.js", function(err, data){
+        var f = new Function(data);
+        var com = {};
+        com.DEFINE = f();
+        com.ins = new com.DEFINE({parent:null});
+        CurSite.IMPL.ROOT = com;
+    });
+</script>
+</body>
+</html>

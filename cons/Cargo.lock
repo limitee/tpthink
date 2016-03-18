@@ -1,0 +1,12 @@
+[root]
+name = "cons"
+version = "0.0.1"
+dependencies = [
+ "lazy_static 0.1.15 (git+https://github.com/rust-lang-nursery/lazy-static.rs.git)",
+]
+
+[[package]]
+name = "lazy_static"
+version = "0.1.15"
+source = "git+https://github.com/rust-lang-nursery/lazy-static.rs.git#630d7ef6a5c2fd4c3439487f26b64bf34f9ccce6"
+

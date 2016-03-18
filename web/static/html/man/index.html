@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link href="./css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="./css/bootstrap-theme.min.css" rel="stylesheet"/>
+        <link href="./css/site.css" rel="stylesheet"/>
+
+        <!--[if lt IE 9]>
+        <script src="./js/html5shiv.min.js"></script>
+        <script src="./js/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-4">
+                    <h2 class="form-signin-heading">填写您的基本信息</h2>
+                    <label for="username" class="sr-only">用户名</label>
+                    <input type="email" id="username" class="form-control" placeholder="用户名" required autofocus>
+                    <p>用户名是你的登录网站的id</p>
+                    <label for="password" class="sr-only">密码</label>
+                    <input type="password" id="password" class="form-control" placeholder="密码" required>
+                    <p>您的密码能保护您的信息不被他人看到</p>
+                    <label for="re_password" class="sr-only">密码</label>
+                    <input type="password" id="re_password" class="form-control" placeholder="再输入一次密码" required>
+                    <p>再次输入您得密码</p>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me"> 立即登录
+                        </label>
+                    </div>
+                    <button id="reg_bt" class="btn btn-lg btn-primary btn-block" type="submit">我要注册</button>
+                </div>
+                <div class="col-md-5">
+
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="./js/cryptojs/rollups/md5.js"></script>
+        <script type="text/javascript" src="./js/cryptojs/components/enc-base64.js"></script>
+        <script type="text/javascript" src="./js/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./js/site.js"></script>
+
+        <script type="text/javascript">
+            CurSite.get_js("man/index.js", function(err, data){
+                var f = new Function(data);
+                var com = {};
+                com.DEFINE = f();
+                com.ins = new com.DEFINE({parent:null});
+                CurSite.IMPL.ROOT = com;
+            });
+        </script>
+
+    </body>
+</html>

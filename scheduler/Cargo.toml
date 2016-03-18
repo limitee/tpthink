@@ -1,0 +1,17 @@
+[package]
+name = "scheduler"
+version = "0.0.1"
+authors = ["bosilan"]
+
+[dependencies]
+rustc-serialize = "0.3.16"
+time = "0.1"
+lazy_static = "0.1.15"
+cron = "0.0.2"
+
+easydb = {version="0.0.1", path="../../../easydb"}
+easy_util = {version="0.0.1", path="../../../easy_util"}
+dc = {version="0.0.1", path="../dc"}
+util = {version="0.0.1", path="../util"}
+cons = {version="0.0.1", path="../cons"}
+service = {version="0.0.1", path="../service"}
