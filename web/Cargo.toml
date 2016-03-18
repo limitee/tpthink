@@ -14,9 +14,9 @@ chrono = "0.2.20"
 log = "0.3.5"
 
 lazy_static = { git = "https://github.com/rust-lang-nursery/lazy-static.rs.git" }
-easydb = {version="0.0.1", path="../../../easydb"}
-easy_util = {version="0.0.1", path="../../../easy_util"}
-easy_config = {version="0.0.1", path="../../../easy_config"}
+easydb = {git = "https://limitee:20131988lm@github.com/limitee/easydb.git"}
+easy_util = {git = "https://limitee:20131988lm@github.com/limitee/easy_util.git"}
+easy_config = {git = "https://limitee:20131988lm@github.com/limitee/easy_config.git"}
 elog = {version="0.0.1", path="../elog"}
 dc = {version="0.0.1", path="../dc"}
 util = {version="0.0.1", path="../util"}

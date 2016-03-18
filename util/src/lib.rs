@@ -4,7 +4,7 @@ use self::crypto::digest::Digest;
 use self::crypto::md5::Md5;
 
 extern crate rustc_serialize;
-use self::rustc_serialize::base64::{FromBase64, Config, ToBase64, CharacterSet, Newline, FromBase64Error};
+use self::rustc_serialize::base64::{FromBase64, FromBase64Error};
 
 extern crate time;
 
