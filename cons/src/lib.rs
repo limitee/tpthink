@@ -29,6 +29,18 @@ pub struct ConsNode {
     desc:String,
 }
 
+impl ConsNode {
+	
+	pub fn new(id:i32, code:&str, desc:&str) -> ConsNode {
+		ConsNode {
+			id:id,
+			code:code.to_string(),
+			desc:desc.to_string(),
+		}
+	}
+	
+}
+
 pub struct Cons {
     code_data:BTreeMap<String, Arc<ConsNode>>,
     id_data:BTreeMap<i32, Arc<ConsNode>>,
@@ -58,7 +70,7 @@ pub struct ConsFactory {
 
 macro_rules! get_node {
     ($o:expr, $k:expr, $v:expr) => {{
-        Arc::new(ConsNode{id:$o, code:$k.to_string(), desc:$v.to_string()})
+        Arc::new(ConsNode::new($o, $k, $v))
     }}
 }
 
@@ -134,7 +146,31 @@ impl ConsFactory {
             },
         }
     }
-
+    
+    pub fn id_to_desc(&self, name:&str, id:i32) -> Result<&str, i32> {
+        let op = self.by_id(name, id);
+        match op {
+            Some(x) => {
+                Result::Ok((**x).desc.as_str())
+            },
+            None => {
+                Result::Err(ErrCode::ValueNotExist as i32)
+            },
+        }
+    }
+	
+	pub fn code_to_desc(&self, name:&str, code:&str) -> Result<&str, i32> {
+        let op = self.by_code(name, code);
+        match op {
+            Some(x) => {
+                Result::Ok((**x).desc.as_str())
+            },
+            None => {
+                Result::Err(ErrCode::ValueNotExist as i32)
+            },
+        }
+    }
+	
 }
 
 lazy_static! {
