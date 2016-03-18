@@ -1,5 +1,5 @@
 [package]
-name = "scheduler"
+name = "game"
 version = "0.0.1"
 authors = ["ming li"]
 
@@ -7,7 +7,6 @@ authors = ["ming li"]
 rustc-serialize = "0.3.16"
 time = "0.1"
 lazy_static = "0.1.15"
-cron = "0.0.2"
 
 easydb = {git = "https://limitee:20131988lm@github.com/limitee/easydb.git"}
 easy_util = {git = "https://limitee:20131988lm@github.com/limitee/easy_util.git"}
