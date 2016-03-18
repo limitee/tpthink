@@ -13,4 +13,9 @@ fn main() {
         println!("{}", json);
         Result::Ok(())
     });
+    
+    let _ = my_db.stream("select * from forder", |json| {
+        println!("{}", json);
+        true
+    });
 }

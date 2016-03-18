@@ -92,7 +92,46 @@ impl MyDbPool {
         json_set!(&mut rst_json; "rows"; rows.len());
         rst_json
     }
+}
 
+impl DbPool for MyDbPool {
+
+    fn get_connection(&self) -> Result<Connection, i32> {
+        let rst = match Connection::connect(self.dsn.as_str(), SslMode::None) {
+            Ok(conn) => Result::Ok(conn),
+            Err(e) => {
+                println!("Connection error: {}", e);
+                Result::Err(-1)
+            }
+        };
+        rst
+    }
+
+    fn execute(&self, sql:&str) -> Result<Json, i32> {
+        println!("{}", sql);
+        let between = Range::new(0, self.conns.len());
+        let mut rng = rand::thread_rng();
+        let rand_int = between.ind_sample(&mut rng);
+        let conn = self.conns[rand_int].lock().unwrap();
+
+        let out_rst = {
+            let rst = conn.query(sql, &[]);
+            rst.and_then(|rows| {
+                Result::Ok(self.get_back_json(rows))
+            })
+        };
+
+        match out_rst {
+            Ok(json) => {
+                Result::Ok(json)
+            },
+            Err(err) => {
+                println!("{}", err);
+                Result::Err(-1)
+            },
+        }
+    }
+    
     fn stream<F>(&self, sql:&str, mut f:F) -> Result<i32, i32> where F:FnMut(Json) -> bool + 'static {
         let conn = try!(self.get_connection());
         let rst = conn.query("BEGIN", &[]);
@@ -108,16 +147,18 @@ impl MyDbPool {
         });
 
         //cursor
-        let cursor_sql = format!("DECLARE myportal CURSOR FOR {}", sql);
-        println!("{}", cursor_sql);
-        let rst = conn.query(&cursor_sql, &[]);
-        let rst = rst.and_then(|rows|{
-            let json = self.get_back_json(rows);
-            println!("{}", json);
-            Result::Ok(1)
-        }).or_else(|err|{
-            println!("{}", err);
-            Result::Err(-1)
+        let rst = rst.and_then(|_| {
+        		let cursor_sql = format!("DECLARE myportal CURSOR FOR {}", sql);
+        		println!("{}", cursor_sql);
+        		let rst = conn.query(&cursor_sql, &[]);
+        		rst.and_then(|rows|{
+	            let json = self.get_back_json(rows);
+	            println!("{}", json);
+	            Result::Ok(1)
+	        }).or_else(|err|{
+	            println!("{}", err);
+	            Result::Err(-1)
+	        })
         });
 
         let rst = rst.and_then(|_| {
@@ -159,71 +200,36 @@ impl MyDbPool {
         });
 
         //close the portal
-        let close_sql = "CLOSE myportal";
-        println!("{}", close_sql);
-        let rst = conn.query(&close_sql, &[]);
-        let rst = rst.and_then(|rows|{
-            let json = self.get_back_json(rows);
-            println!("{}", json);
-            Result::Ok(1)
-        }).or_else(|err|{
-            println!("{}", err);
-            Result::Err(-1)
+        let rst = rst.and_then(|_|{
+        		let close_sql = "CLOSE myportal";
+	        println!("{}", close_sql);
+	        let rst = conn.query(&close_sql, &[]);
+	        rst.and_then(|rows|{
+	            let json = self.get_back_json(rows);
+	            println!("{}", json);
+	            Result::Ok(1)
+	        }).or_else(|err|{
+	            println!("{}", err);
+	            Result::Err(-1)
+	        })
         });
 
         //end the cursor
-        let end_sql = "END";
-        println!("{}", end_sql);
-        let rst = conn.query(&end_sql, &[]);
-        let rst = rst.and_then(|rows|{
-            let json = self.get_back_json(rows);
-            println!("{}", json);
-            Result::Ok(1)
-        }).or_else(|err|{
-            println!("{}", err);
-            Result::Err(-1)
-        });
+        let rst = rst.and_then(|_|{
+        		let end_sql = "END";
+	        println!("{}", end_sql);
+	        let rst = conn.query(&end_sql, &[]);
+	        rst.and_then(|rows|{
+	            let json = self.get_back_json(rows);
+	            println!("{}", json);
+	            Result::Ok(1)
+	        }).or_else(|err|{
+	            println!("{}", err);
+	            Result::Err(-1)
+	        })		
+        	});
 
         rst
-    }
-}
-
-impl DbPool for MyDbPool {
-
-    fn get_connection(&self) -> Result<Connection, i32> {
-        let rst = match Connection::connect(self.dsn.as_str(), SslMode::None) {
-            Ok(conn) => Result::Ok(conn),
-            Err(e) => {
-                println!("Connection error: {}", e);
-                Result::Err(-1)
-            }
-        };
-        rst
-    }
-
-    fn execute(&self, sql:&str) -> Result<Json, i32> {
-        println!("{}", sql);
-        let between = Range::new(0, self.conns.len());
-        let mut rng = rand::thread_rng();
-        let rand_int = between.ind_sample(&mut rng);
-        let conn = self.conns[rand_int].lock().unwrap();
-
-        let out_rst = {
-            let rst = conn.query(sql, &[]);
-            rst.and_then(|rows| {
-                Result::Ok(self.get_back_json(rows))
-            })
-        };
-
-        match out_rst {
-            Ok(json) => {
-                Result::Ok(json)
-            },
-            Err(err) => {
-                println!("{}", err);
-                Result::Err(-1)
-            },
-        }
     }
 }
 
@@ -409,6 +415,9 @@ impl<T:DbPool> DataBase<T> {
     pub fn execute(&self, sql:&str) -> Result<Json, i32> {
         self.dc.execute(&sql)
     }
-
+	
+	pub fn stream<F>(&self, sql:&str, f:F) -> Result<i32, i32> where F:FnMut(Json) -> bool + 'static {
+		self.dc.stream(sql, f)
+	}
 }
 
