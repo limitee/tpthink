@@ -54,3 +54,6 @@ ALTER ROLE postgres WITH login;
 ```
 CREATE UNIQUE INDEX order_food_unique ON order_food (customer_id, forder_id, food_id);
 ```
+
+# lot
+lot system
