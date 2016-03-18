@@ -8,8 +8,6 @@ extern crate colored;
 use colored::*;
 
 extern crate rustc_serialize;
-use self::rustc_serialize::json::Json;
-use self::rustc_serialize::json::ToJson;
 use std::str::FromStr;
 
 #[macro_use]
@@ -45,7 +43,7 @@ impl log::Log for SimpleLogger {
         let mt = record.metadata();
         if self.enabled(mt) {
             let head = format!("[{}] [{}] [{}]", Local::now(), record.level(), mt.target());
-            let mut colored_head;
+            let colored_head;
             match record.level() {
                 LogLevel::Error => {
                     colored_head = head.red();

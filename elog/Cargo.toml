@@ -9,4 +9,4 @@ chrono = "0.2.20"
 colored = "1.1.0"
 rustc-serialize = "0.3.16"
 
-easy_config = {version="0.0.1", path="../../../easy_config"}
+easy_config = {git = "https://limitee:20131988lm@github.com/limitee/easy_config.git"}

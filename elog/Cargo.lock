@@ -4,8 +4,9 @@ version = "0.0.1"
 dependencies = [
  "chrono 0.2.20 (registry+https://github.com/rust-lang/crates.io-index)",
  "colored 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "easy_config 0.0.1",
+ "easy_config 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_config.git)",
  "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.18 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -28,8 +29,9 @@ dependencies = [
 [[package]]
 name = "easy_config"
 version = "0.0.1"
+source = "git+https://limitee:20131988lm@github.com/limitee/easy_config.git#882e04f9397a9d35dcc523e622cf1cf0c326f17b"
 dependencies = [
- "easy_util 0.0.1",
+ "easy_util 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_util.git)",
  "lazy_static 0.1.15 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.18 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -38,6 +40,7 @@ dependencies = [
 [[package]]
 name = "easy_util"
 version = "0.0.1"
+source = "git+https://limitee:20131988lm@github.com/limitee/easy_util.git#7d5fc36e82ab42325f985c9ec69e29df7a6e5000"
 dependencies = [
  "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.18 (registry+https://github.com/rust-lang/crates.io-index)",
