@@ -20,7 +20,8 @@ pub enum ErrCode {
     PasswordWrongPattern,
 
     UserInfoIsWrong,
-
+	
+	GameNotExists,
 }
 
 pub struct ConsNode {

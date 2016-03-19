@@ -17,3 +17,5 @@ dc = {version="0.0.1", path="../dc"}
 util = {version="0.0.1", path="../util"}
 cons = {version="0.0.1", path="../cons"}
 service = {version="0.0.1", path="../service"}
+
+game = {version="0.0.1", path="../game"}
