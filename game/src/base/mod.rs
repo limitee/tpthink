@@ -44,6 +44,10 @@ impl Ticket {
 	pub fn get_play_type(&self) -> i32 {
 		self.play_type
 	}
+	
+	pub fn get_bet_type(&self) -> i32 {
+		self.bet_type
+	}
 }
 
 ///系统中的一种游戏
@@ -94,19 +98,27 @@ pub struct PlayType {
 	id:i32,
 	price:i32,
 	name: String,
+	map: BTreeMap<i32, BetType>,
 }
 
 impl PlayType {
-	pub fn new(id:i32, price:i32, name:&str) -> PlayType {
+	pub fn new(id:i32, price:i32, name:&str, map: BTreeMap<i32, BetType>) -> PlayType {
 		PlayType {
 			id: id,
 			price: price,
 			name: name.to_string(),
+			map: map,
 		}
 	}
 	
 	pub fn get_price(&self) -> i32 {
 		self.price
+	}
+	
+	///根据id获得投注方式
+	pub fn get_bet_type(&self, bet_type_id:i32) -> Result<&BetType, i32> {
+		let op:Option<&BetType> = self.map.get(&bet_type_id);
+		op.ok_or(ErrCode::BetTypeNotExists as i32)
 	}
 }
 
@@ -134,9 +146,19 @@ pub struct GameFactory {
 
 fn get_ssq_game() -> Game {
 	let mut map = BTreeMap::new();
-	map.insert(10, PlayType::new(10, 200, "单式"));
-	map.insert(11, PlayType::new(11, 200, "复式"));
-	map.insert(12, PlayType::new(12, 200, "胆托"));
+	
+	let mut bet_map = BTreeMap::new();
+	bet_map.insert(10, BetType::new(10, "标准"));
+	map.insert(10, PlayType::new(10, 200, "单式", bet_map));
+	
+	let mut bet_map = BTreeMap::new();
+	bet_map.insert(10, BetType::new(10, "标准"));
+	map.insert(11, PlayType::new(11, 200, "复式", bet_map));
+	
+	let mut bet_map = BTreeMap::new();
+	bet_map.insert(10, BetType::new(10, "标准"));
+	map.insert(12, PlayType::new(12, 200, "胆托", bet_map));
+	
 	Game::new(100, "SSQ", "双色球", map)
 }
 

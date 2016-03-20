@@ -3,13 +3,16 @@ use std::collections::BTreeMap;
 extern crate cons;
 use cons::ErrCode;
 
+extern crate regex;
+use self::regex::Regex;
+
 use super::base::Ticket;
 use super::base::Game;
 use super::base::PlayType;
 use super::base::BetType;
 use super::base::GF;
 
-pub type ValidateResult = Result<(), i32>;
+pub type ValidateResult = Result<(i32), i32>;
 
 pub trait Validate: Send + Sync {
 	
@@ -26,13 +29,17 @@ impl Validate for ValidateSsq1010 {
 		let multiple = ticket.get_multiple();
 		let number = ticket.get_number();
 		let v: Vec<&str> = number.split(';').collect();
+		let re = Regex::new(r"^([0-9]{2},){5},[0-9]{2}|[0-9]{2}$").unwrap();
 		for num in &v {
-			println!("{}", num);
+            if !re.is_match(num) {
+                return Result::Err(ErrCode::NumberIsWrong as i32);
+            }
 		}
-		let true_amount = v.len() as i32*price*multiple;
+		let count = v.len() as i32;
+		let true_amount = count*price*multiple;
 		let rst = {
 			if amount == true_amount {
-				Result::Ok(())
+				Result::Ok((count))
 			} else {
 				Result::Err(ErrCode::AmountIsWrong as i32)
 			}
@@ -61,9 +68,13 @@ impl ValidateFactory {
         }
 	}
 	
-	pub fn validate(ticket:&Ticket) -> ValidateResult {
+	pub fn validate(&self, ticket:&Ticket) -> ValidateResult {
 		let game = try!(GF.get_game_by_id(ticket.get_game_id()));
 		let play_type = try!(game.get_play_type(ticket.get_play_type()));
-		Result::Ok(())
+		let bet_type = try!(play_type.get_bet_type(ticket.get_bet_type()));
+		
+		let key = format!("{}{}{}", ticket.get_game_id(), ticket.get_play_type(), ticket.get_bet_type());
+		let validate = self.map.get(&key).unwrap();
+		validate.validate(ticket, game, play_type, bet_type)
 	}
 }

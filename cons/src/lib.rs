@@ -24,6 +24,8 @@ pub enum ErrCode {
 	GameNotExists,	//游戏不存在
 	AmountIsWrong,	//金额错误
 	PlayTypeNotExists,	//玩法不存在
+	BetTypeNotExists,	//投注方式不存在
+	NumberIsWrong,	//号码格式错误
 }
 
 pub struct ConsNode {

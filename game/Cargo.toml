@@ -6,6 +6,7 @@ authors = ["ming li"]
 [dependencies]
 rustc-serialize = "0.3.16"
 time = "0.1"
+regex = "0.1"
 lazy_static = "0.1.15"
 
 easydb = {git = "https://limitee:20131988lm@github.com/limitee/easydb.git"}
