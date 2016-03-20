@@ -7,6 +7,7 @@ use super::base::Ticket;
 use super::base::Game;
 use super::base::PlayType;
 use super::base::BetType;
+use super::base::GF;
 
 pub type ValidateResult = Result<(), i32>;
 
@@ -15,9 +16,9 @@ pub trait Validate: Send + Sync {
 	fn validate(&self, ticket: &Ticket, game:&Game, play_type:&PlayType, bet_type:&BetType) -> ValidateResult;
 }
 
-struct ValidateSsq0000;
+struct ValidateSsq1010;
 
-impl Validate for ValidateSsq0000 {
+impl Validate for ValidateSsq1010 {
 	
 	fn validate(&self, ticket: &Ticket, game:&Game, play_type:&PlayType, bet_type:&BetType) -> ValidateResult {
 		let amount = ticket.get_amount();
@@ -51,13 +52,18 @@ macro_rules! add_inter {
 }
 
 impl ValidateFactory {
+	
 	pub fn new() -> ValidateFactory {
 		let mut map = BTreeMap::new();
-        add_inter!(map, "1000000", ValidateSsq0000);
+        add_inter!(map, "1001010", ValidateSsq1010);
         ValidateFactory {
             map:map,
         }
 	}
 	
-	
+	pub fn validate(ticket:&Ticket) -> ValidateResult {
+		let game = try!(GF.get_game_by_id(ticket.get_game_id()));
+		let play_type = try!(game.get_play_type(ticket.get_play_type()));
+		Result::Ok(())
+	}
 }

@@ -1,3 +1,8 @@
+use std::collections::BTreeMap;
+
+extern crate cons;
+use cons::ErrCode;
+
 pub struct Ticket {
 	game_id: i32,
 	play_type: i32,
@@ -20,6 +25,10 @@ impl Ticket {
 		}
 	}
 	
+	pub fn get_game_id(&self) -> i32 {
+		self.game_id
+	}
+	
 	pub fn get_amount(&self) -> i32 {
 		self.amount
 	}
@@ -31,6 +40,10 @@ impl Ticket {
 	pub fn get_number(&self) -> &str {
 		&self.number
 	}
+	
+	pub fn get_play_type(&self) -> i32 {
+		self.play_type
+	}
 }
 
 ///系统中的一种游戏
@@ -40,15 +53,17 @@ pub struct Game {
 	id:i32,
 	code: String,
 	name: String,
+	map: BTreeMap<i32, PlayType>,
 }
 
 impl Game {
 	///id为唯一标志,code为游戏简称，name为中文名称
-	pub fn new(id:i32, code:&str, name:&str) -> Game {
+	pub fn new(id:i32, code:&str, name:&str, map:BTreeMap<i32, PlayType>) -> Game {
 		Game {
 			id: id,
 			code: code.to_string(),
 			name: name.to_string(),
+			map: map,
 		}
 	}
 	
@@ -65,6 +80,12 @@ impl Game {
 	///获得游戏代码
 	pub fn get_code(&self) -> &str {
 		&self.code
+	}
+	
+	///根据玩法id获得玩法
+	pub fn get_play_type(&self, play_type_id:i32) -> Result<&PlayType, i32> {
+		let op:Option<&PlayType> = self.map.get(&play_type_id);
+		op.ok_or(ErrCode::PlayTypeNotExists as i32)
 	}
 }
 
@@ -103,4 +124,41 @@ impl BetType {
 			name: name.to_string(),
 		}
 	}
+}
+
+
+///工厂类，存储了所有游戏的详情
+pub struct GameFactory {
+	game_list:BTreeMap<i32, Game>,
+}
+
+fn get_ssq_game() -> Game {
+	let mut map = BTreeMap::new();
+	map.insert(10, PlayType::new(10, 200, "单式"));
+	map.insert(11, PlayType::new(11, 200, "复式"));
+	map.insert(12, PlayType::new(12, 200, "胆托"));
+	Game::new(100, "SSQ", "双色球", map)
+}
+
+impl GameFactory {
+	
+	pub fn new() -> GameFactory {
+		let mut map = BTreeMap::new();
+		let game = get_ssq_game();
+		map.insert(game.get_id(), game);
+		GameFactory {
+			game_list:map,
+		}
+    }
+	
+	///根据id获得&Game
+	pub fn get_game_by_id(&self, id:i32) -> Result<&Game, i32> {
+		let op:Option<&Game> = self.game_list.get(&id);
+		op.ok_or(ErrCode::GameNotExists as i32)
+	}
+	
+}
+
+lazy_static! {
+    pub static ref GF:GameFactory = GameFactory::new();
 }

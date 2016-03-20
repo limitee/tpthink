@@ -23,6 +23,7 @@ pub enum ErrCode {
 	
 	GameNotExists,	//游戏不存在
 	AmountIsWrong,	//金额错误
+	PlayTypeNotExists,	//玩法不存在
 }
 
 pub struct ConsNode {
