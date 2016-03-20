@@ -21,7 +21,8 @@ pub enum ErrCode {
 
     UserInfoIsWrong,
 	
-	GameNotExists,
+	GameNotExists,	//游戏不存在
+	AmountIsWrong,	//金额错误
 }
 
 pub struct ConsNode {
