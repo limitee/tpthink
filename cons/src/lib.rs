@@ -26,6 +26,7 @@ pub enum ErrCode {
 	PlayTypeNotExists,	//玩法不存在
 	BetTypeNotExists,	//投注方式不存在
 	NumberIsWrong,	//号码格式错误
+	CountBtFive,	//单式不能超过5注
 }
 
 pub struct ConsNode {

@@ -29,13 +29,16 @@ impl Validate for ValidateSsq1010 {
 		let multiple = ticket.get_multiple();
 		let number = ticket.get_number();
 		let v: Vec<&str> = number.split(';').collect();
+		let count = v.len() as i32;
+		if count > 5 {
+			return Result::Err(ErrCode::CountBtFive as i32);
+		}
 		let re = Regex::new(r"^([0-9]{2},){5},[0-9]{2}|[0-9]{2}$").unwrap();
 		for num in &v {
             if !re.is_match(num) {
                 return Result::Err(ErrCode::NumberIsWrong as i32);
             }
 		}
-		let count = v.len() as i32;
 		let true_amount = count*price*multiple;
 		let rst = {
 			if amount == true_amount {
