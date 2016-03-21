@@ -1,30 +1,20 @@
 extern crate scheduler;
 use scheduler::*;
 
+use std::io::prelude::*;
+use std::net::TcpStream;
+
 use std::thread;
-use std::net::{TcpListener, TcpStream};
 
 fn main() {
-	
-	let listener = TcpListener::bind("127.0.0.1:8888").unwrap();
-	
-	fn handle_client(stream: TcpStream) {
-	    // ...
+    let mut stream = TcpStream::connect("127.0.0.1:8888").unwrap();
+
+    // ignore the Result
+    let _ = stream.write(&[1]);
+    //let _ = stream.read(&mut [0; 128]); // ignore here too
+	loop {
+		thread::sleep(std::time::Duration::new(1, 0));
+		let _ = stream.write(&[1]);
 	}
-	
-	// accept connections and process them, spawning a new thread for each one
-	for stream in listener.incoming() {
-	    match stream {
-	        Ok(stream) => {
-	            thread::spawn(move|| {
-	                // connection succeeded
-	                handle_client(stream)
-	            });
-	        }
-	        Err(e) => { /* connection failed */ }
-	    }
-	}
-	
-	// close the socket server
-	drop(listener);
+	// the stream is closed here
 }

@@ -1,5 +1,5 @@
 [root]
-name = "scheduler"
+name = "server"
 version = "0.0.1"
 dependencies = [
  "cons 0.0.1",
