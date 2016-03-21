@@ -1,0 +1,11 @@
+{
+  "target": "dev",
+  "db": {
+    "dsn":"postgresql://postgres:1988lm@localhost/order_sys",
+    "conn_limit": 5
+  },
+  "hyper": {
+    "port": 4000,
+    "thread_count": 25
+  }
+}
