@@ -1,0 +1,22 @@
+[package]
+name = "scheduler"
+version = "0.0.1"
+authors = ["ming li"]
+
+[dependencies]
+rustc-serialize = "0.3.16"
+time = "0.1"
+lazy_static = "0.1.15"
+cron = "0.0.2"
+unix_socket = "0.5.0"
+
+easydb = {git = "https://limitee:20131988lm@github.com/limitee/easydb.git"}
+easy_util = {git = "https://limitee:20131988lm@github.com/limitee/easy_util.git"}
+easy_config = {git = "https://limitee:20131988lm@github.com/limitee/easy_config.git"}
+
+dc = {version="0.0.1", path="../dc"}
+util = {version="0.0.1", path="../util"}
+cons = {version="0.0.1", path="../cons"}
+service = {version="0.0.1", path="../service"}
+
+game = {version="0.0.1", path="../game"}

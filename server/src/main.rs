@@ -1,6 +1,3 @@
-extern crate scheduler;
-use scheduler::*;
-
 use std::thread;
 use std::net::{TcpListener, TcpStream};
 
