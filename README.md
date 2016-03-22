@@ -1,8 +1,8 @@
 # order_sys
 订餐系统
 
-ssh root@121.42.218.61
-BSL1qaz@WSX
+ssh root@123.57.64.210
+3edcvBHU8
 
 ```
 scp ./target/release/web root@121.42.218.61:/data/workspace/jq/order_sys/web/.

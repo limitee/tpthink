@@ -115,12 +115,13 @@ fn handle_client(mut stream: TcpStream) {
 fn main() {
 	let _ = elog::init();
     let stream = TcpStream::connect("127.0.0.1:8888").unwrap();
+    /*
     let th = thread::spawn(move|| {
         // connection succeeded
         handle_client(stream)
     });
     let _ = th.join();
-    /*
+    */
 	loop {
 		thread::sleep(std::time::Duration::new(1, 0));
 		let mut head = json!("{}");
@@ -136,5 +137,5 @@ fn main() {
 		if rst.is_err() {
 			break;
 		}
-	}*/
+	}
 }
