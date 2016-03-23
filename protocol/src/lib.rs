@@ -26,14 +26,16 @@ use chrono::*;
 pub struct Protocol {
 	stream:TcpStream,
 	rec_buffer: Vec<u8>, 
+	key: String,
 }
 
 impl Protocol {
 	
-	pub fn new(stream:TcpStream) -> Protocol {
+	pub fn new(stream:TcpStream, key:String) -> Protocol {
 		Protocol {
 			stream:stream,
 			rec_buffer: Vec::<u8>::new(),
+			key: key,
 		}
 	}
 	
@@ -104,7 +106,7 @@ impl Protocol {
 		rst
 	}
 	
-	fn send_body(&mut self, cmd:&str, body:&Json) -> Result<(), Error> {
+	pub fn send_body(&mut self, cmd:&str, body:&Json) -> Result<(), Error> {
 		let body_str = body.to_string();
 		
 		let mut head = json!("{}");
@@ -112,10 +114,9 @@ impl Protocol {
 		json_set!(&mut head; "userId"; "test001");
 		let time_stamp = Local::now().to_string();
 		json_set!(&mut head; "timeStamp"; time_stamp);
-		let key = DigestUtil::empty_key();
-	    let digest_content = format!("{}{}{}", key, body, time_stamp);
+	    let digest_content = format!("{}{}{}", self.key, body, time_stamp);
 	    let digest = DigestUtil::md5(&digest_content);
-	    json_set!(&mut head; "digestType"; "md5-empty");
+	    json_set!(&mut head; "digestType"; "md5");
 	    json_set!(&mut head; "digest"; digest);
 	    
 	    let head_str = head.to_string();
