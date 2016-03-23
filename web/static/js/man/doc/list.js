@@ -33,7 +33,7 @@ Com.prototype.to_page = function(index) {
         offset: self.skip,
         limit: self.limit
     };
-    CurSite.postDigest({cmd:"F01"}, body, function(err, back_body)
+    CurSite.postDigest({cmd:"AD01"}, body, function(err, back_body)
     {
         if(back_body.data.length == 0) {
             self.dom_set_list.html("列表为空");

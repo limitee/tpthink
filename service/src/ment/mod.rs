@@ -1,4 +1,5 @@
 pub mod admin_room;
+pub mod admin_doc;
 pub mod user;
 pub mod admin;
 pub mod hotel;

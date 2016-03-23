@@ -16,10 +16,10 @@ Com.prototype.init = function() {
 
     self.dom_room_type_list = $('#doc_list');
     self.dom_room_type_list.on('click', function(e) {
-        CurSite.to_page(self.cr.main, "man_doc_list");
+        CurSite.to_page(self.cr.main, "man_doc_index");
     });
 
-    //CurSite.to_page(self.cr.main, "man_hotel_list");
+    CurSite.to_page(self.cr.main, "man_doc_index");
 }
 
 return Com;
