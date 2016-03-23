@@ -31,9 +31,6 @@ use std::collections::BTreeMap;
 extern crate server;
 use server::*;
 
-type Msg = Json;
-type ManMsg = Json;
-
 fn handle_msg(head:&str, body:&str) {
 	info!("head:{}", head);
 	info!("body:{}", body);

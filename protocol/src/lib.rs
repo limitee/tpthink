@@ -62,19 +62,20 @@ impl Protocol {
 	    				//有消息需要处理
 					if cur_buffer_length >= target_buffer_length + 4 {
 						let vec2 = self.rec_buffer.split_off((target_buffer_length + 4) as usize);
+						let (head_str, body_str) = {
+							let mut rdr = Cursor::new(&self.rec_buffer[4..8]);
+							//消息头的长度
+							let head_length = rdr.read_i32::<BigEndian>().unwrap();
+							let head_end = (head_length + 8) as usize;
+							let head_str = String::from_utf8_lossy(&self.rec_buffer[8..head_end]).into_owned();
+							
+							//消息体的长度
+							let body_length = (target_buffer_length - head_length - 4) as usize;
+							let body_end = head_end + body_length; 
+							let body_str = String::from_utf8_lossy(&self.rec_buffer[head_end..body_end]).into_owned();
+							(head_str, body_str)
+						};
 						self.rec_buffer = vec2;
-					
-						let mut rdr = Cursor::new(&self.rec_buffer[4..8]);
-						//消息头的长度
-						let head_length = rdr.read_i32::<BigEndian>().unwrap();
-						let head_end = (head_length + 8) as usize;
-						let head_str = String::from_utf8_lossy(&self.rec_buffer[8..head_end]).into_owned();
-						
-						//消息体的长度
-						let body_length = (target_buffer_length - head_length - 4) as usize;
-						let body_end = head_end + body_length; 
-						let body_str = String::from_utf8_lossy(&self.rec_buffer[head_end..body_end]).into_owned();
-						
 						return Result::Ok((head_str, body_str))
 					} else {
 						return Result::Err(-1)

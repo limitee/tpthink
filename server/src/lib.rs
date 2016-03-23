@@ -28,9 +28,50 @@ use std::sync::mpsc::Receiver;
 use std::sync::{Arc, Mutex};
 use std::collections::BTreeMap;
 
-type Msg = Json;
-type ManMsg = Json;
+pub type Msg = Json;
+pub type ManMsg = Json;
 type IndexMap = Arc<Mutex<BTreeMap<i32, Sender<Msg>>>>;
+pub type ClientRx = Arc<Mutex<Receiver<Msg>>>;
+
+pub struct ClientHandler {
+	proto: Protocol,
+	man_sx: Sender<ManMsg>,
+	client_rx: ClientRx,
+}
+
+impl ClientHandler {
+	
+	pub fn new(proto:Protocol, man_sx:Sender<ManMsg>, client_rx:ClientRx) -> ClientHandler {
+		ClientHandler {
+			proto: proto,
+			man_sx: man_sx,
+			client_rx: client_rx,
+		}
+	}
+	
+	/**
+	 * 处理和client交互
+	 */
+	pub fn start(&mut self) {
+		let rst = self.proto.rec_msg();
+		let rst = rst.and_then(|(head_str, body_str)|{
+			info!("head:{}", head_str);
+			info!("body:{}", body_str);
+			//handle_msg(&head_str, &body_str);
+			//buffer = new_buffer;
+			let mut body = json!("{}");
+			json_set!(&mut body; "msg"; "欢迎，登陆成功");
+			self.proto.send_body("S01", &body);
+			Result::Ok(())
+		});
+		rst.and_then(|_|{
+			loop {
+				thread::sleep(std::time::Duration::new(1, 0));
+			}
+			Result::Ok(())
+		});
+	}
+}
 
 /**
  * 服务器
@@ -40,17 +81,21 @@ pub struct Server {
 	listener: TcpListener,
 	index: i32,	//计数器，为了一一对应当前登陆得用户
 	index_map: IndexMap,	//map the index and the sender of connection
-	
+	man_rx: Receiver<ManMsg>,
+	man_sx: Sender<ManMsg>, 
 }
 
 impl Server {
 	pub fn new(url:&str) -> Server {
 		let listener = TcpListener::bind("127.0.0.1:8888").unwrap();
+		let (man_sx, man_rx) = mpsc::channel::<ManMsg>();
 		Server {
 			url: url.to_string(),
 			listener: listener,
 			index: 0_i32,
 			index_map: Arc::new(Mutex::new(BTreeMap::<i32, Sender<Msg>>::new())),
+			man_sx: man_sx,
+			man_rx: man_rx,
 		}
 	}
 	
@@ -64,11 +109,23 @@ impl Server {
 			match stream {
 		        Ok(stream) => {
 			        	self.index += 1;
-					let (tx, rx) = mpsc::channel::<Msg>();
+					let index = self.index;
+					
+					let (sx, rx) = mpsc::channel::<Msg>();
 		        		let rx = Arc::new(Mutex::new(rx));
-		    			//clone the map
-        				let index_map = index_map.lock().unwrap();
+		    			//lock the index map
+        				let mut index_map = index_map.lock().unwrap();
+        				index_map.insert(index, sx);
         				
+        				let rx = rx.clone();
+        				let man_sx = self.man_sx.clone();
+        				thread::spawn(move|| {
+        					let proto = Protocol::new(stream, String::from("abc"));	
+        					let mut ch = ClientHandler::new(proto, man_sx, rx);
+        					ch.start();
+		                // connection succeeded
+		                //handle_client(stream, rx, man_sx, count)
+		            });
 		        },
 		        Err(_) => {
 		        	 /* connection failed */ 

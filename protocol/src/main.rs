@@ -43,8 +43,17 @@ fn main() {
 	let mut body = json!("{}");
 	json_set!(&mut body; "msg"; "我要登陆");
 	let rst = pro.send_body("S01", &body);
-	rst.and_then(|_| {
+	let rst = rst.or_else(|err|{
+		error!("{}", err);
+		Result::Err(-1)
+	});
+	let rst = rst.and_then(|_| {
 		let rst = pro.rec_msg();
+		rst
+	});
+	let rst = rst.and_then(|(head, body)|{
+		info!("head:{}", head);
+		info!("body:{}", body);
 		Result::Ok(())
 	});
 }
