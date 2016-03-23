@@ -20,5 +20,6 @@ util = {version="0.0.1", path="../util"}
 cons = {version="0.0.1", path="../cons"}
 elog = {version="0.0.1", path="../elog"}
 service = {version="0.0.1", path="../service"}
+protocol = {version="0.0.1", path="../protocol"}
 
 game = {version="0.0.1", path="../game"}

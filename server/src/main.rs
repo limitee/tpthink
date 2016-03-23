@@ -8,6 +8,9 @@ use std::io::Cursor;
 extern crate log;
 extern crate elog;
 
+extern crate protocol;
+use protocol::Protocol;
+
 extern crate byteorder;
 use byteorder::{BigEndian, ReadBytesExt};
 
@@ -24,6 +27,9 @@ use std::sync::mpsc::Receiver;
 
 use std::sync::{Arc, Mutex};
 use std::collections::BTreeMap;
+
+extern crate server;
+use server::*;
 
 type Msg = Json;
 type ManMsg = Json;
@@ -181,6 +187,9 @@ fn handle_client(mut stream: TcpStream, rec:Arc<Mutex<Receiver<Msg>>>, man_sx:Se
 
 fn main() {
 	let _ = elog::init();
+	let mut sev = Server::new("127.0.0.1:8888");
+	sev.start();
+	/*
 	let listener = TcpListener::bind("127.0.0.1:8888").unwrap();
 	
 	let machine_map = Arc::new(Mutex::new(BTreeMap::<i32, Sender<Msg>>::new()));
@@ -249,9 +258,10 @@ fn main() {
 	                handle_client(stream, rx, man_sx, count)
 	            });
 	        },
-	        Err(_) => { /* connection failed */ },
+	        Err(_) => { },
 	    }
 	}
 	// close the socket server
 	drop(listener);
+	*/
 }
