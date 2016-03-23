@@ -35,7 +35,7 @@ impl log::Log for SimpleLogger {
         if self.target == "run" {
             metadata.level() <= LogLevel::Info
         } else {
-            metadata.level() <= LogLevel::Debug
+            metadata.level() <= LogLevel::Info
         }
     }
 

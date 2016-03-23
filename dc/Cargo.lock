@@ -3,8 +3,10 @@ name = "dc"
 version = "0.0.1"
 dependencies = [
  "chrono 0.2.20 (registry+https://github.com/rust-lang/crates.io-index)",
+ "easy_config 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_config.git)",
  "easy_util 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_util.git)",
  "easydb 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easydb.git)",
+ "elog 0.0.1",
  "lazy_static 0.1.15 (git+https://github.com/rust-lang-nursery/lazy-static.rs.git)",
  "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "postgres 0.11.4 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -47,6 +49,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "colored"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "lazy_static 0.1.15 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "easy_config"
+version = "0.0.1"
+source = "git+https://limitee:20131988lm@github.com/limitee/easy_config.git#882e04f9397a9d35dcc523e622cf1cf0c326f17b"
+dependencies = [
+ "easy_util 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_util.git)",
+ "lazy_static 0.1.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.18 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "easy_util"
 version = "0.0.1"
 source = "git+https://limitee:20131988lm@github.com/limitee/easy_util.git#7d5fc36e82ab42325f985c9ec69e29df7a6e5000"
@@ -69,6 +90,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "elog"
+version = "0.0.1"
+dependencies = [
+ "chrono 0.2.20 (registry+https://github.com/rust-lang/crates.io-index)",
+ "colored 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "easy_config 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_config.git)",
+ "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.18 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "hex"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -86,6 +118,11 @@ dependencies = [
 name = "lazy_static"
 version = "0.1.15"
 source = "git+https://github.com/rust-lang-nursery/lazy-static.rs.git#97e1d7bc09c45a7d81dbbad3a61cfc49eed90aed"
+
+[[package]]
+name = "lazy_static"
+version = "0.1.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "libc"
