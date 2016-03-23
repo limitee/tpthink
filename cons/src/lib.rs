@@ -89,6 +89,8 @@ impl ConsFactory {
             get_node!(100, "guest", "游客"),
             get_node!(200, "normal", "普通用户"),
             get_node!(300, "company", "公司"),
+            get_node!(400, "station", "出票中心"),
+            get_node!(500, "terminal", "终端机"),
             get_node!(900, "admin", "管理员"),
         ];
         cons.insert("user_type".to_string(), Cons::from_vec(user_type_vec));

@@ -1,7 +1,7 @@
 {
   "target": "dev",
   "db": {
-    "dsn":"postgresql://postgres:1988lm@localhost/order_sys",
+    "dsn":"postgresql://postgres:1988lm@localhost/mcp",
     "conn_limit": 5
   },
   "hyper": {
