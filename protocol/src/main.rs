@@ -1,5 +1,5 @@
-extern crate scheduler;
-use scheduler::*;
+extern crate protocol;
+use protocol::Protocol;
 
 use std::io::prelude::*;
 use std::net::TcpStream;

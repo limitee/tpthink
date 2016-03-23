@@ -25,7 +25,7 @@ use std::sync::mpsc::Receiver;
 use std::sync::{Arc, Mutex};
 use std::collections::BTreeMap;
 
-type Msg = (String, String);
+type Msg = Json;
 type ManMsg = Json;
 
 fn handle_msg(head:&str, body:&str) {
@@ -33,18 +33,91 @@ fn handle_msg(head:&str, body:&str) {
 	info!("body:{}", body);
 }
 
-fn handle_client(mut stream: TcpStream, rec:Arc<Mutex<Receiver<Msg>>>, man_sx:Sender<ManMsg>, index:i32) {
-	let mut buffer = Vec::<u8>::new();	//缓存大小
-	let mut target_buffer_length = 0;	//当前数据块的长度
+fn get_msg_from_client(mut stream: &mut TcpStream, mut buffer:&mut Vec<u8>) -> Result<(String, String, Vec<u8>), i32> {
 	let mut buf = vec![0u8; 1024];	//收取数据的缓存大小
+	let mut target_buffer_length = 0;	//当前数据块的长度
+	loop {
+    		let rst = stream.read(&mut buf);
+    		match rst {
+    			Ok(size) => {
+    				info!("size:{}", size);
+    				buffer.extend_from_slice(&buf[0..size]);
+				let mut cur_buffer_length = buffer.len() as i32;
+				if target_buffer_length == 0 && cur_buffer_length >= 4 {
+					let mut rdr = Cursor::new(&buffer[0..4]);
+					target_buffer_length = rdr.read_i32::<BigEndian>().unwrap();
+				}
+				info!("tbl:{}", target_buffer_length);
+    				info!("cbl:{}", cur_buffer_length);
+    				
+    				//有消息需要处理
+				if cur_buffer_length >= target_buffer_length + 4 {
+					let vec2 = buffer.split_off((target_buffer_length + 4) as usize);
+				
+					let mut rdr = Cursor::new(&buffer[4..8]);
+					//消息头的长度
+					let head_length = rdr.read_i32::<BigEndian>().unwrap();
+					let head_end = (head_length + 8) as usize;
+					let head_str = String::from_utf8_lossy(&buffer[8..head_end]).into_owned();
+					
+					//消息体的长度
+					let body_length = (target_buffer_length - head_length - 4) as usize;
+					let body_end = head_end + body_length; 
+					let body_str = String::from_utf8_lossy(&buffer[head_end..body_end]).into_owned();
+					
+					return Result::Ok((head_str, body_str, vec2))
+				}
+    			},
+    			Err(err) => {
+    				info!("err:{}", err);	
+    			},
+    		}
+	}
+	Result::Err(-1)
+}
+
+fn handle_client(mut stream: TcpStream, rec:Arc<Mutex<Receiver<Msg>>>, man_sx:Sender<ManMsg>, index:i32) {
+	let mut buffer = Vec::<u8>::new();	//缓存
+	let rst = get_msg_from_client(&mut stream, &mut buffer);
+	let rst = rst.and_then(|(head_str, body_str, new_buffer)|{
+		handle_msg(&head_str, &body_str);
+		buffer = new_buffer;
+		Result::Ok(())
+	});
 	
+	let rec = rec.lock().unwrap();
+	//尝试接收从管理线程发送过来的数据
+	loop {
+		let rst = rec.try_recv();
+    		match rst {
+    			Ok(msg) => {
+    				info!("{}", msg);		
+    			},
+    			Err(_) => {
+    					
+    			},
+    		}
+	}
+	
+	/*
 	let mut login_msg = json!("{}");
 	json_set!(&mut login_msg; "cmd"; 10);
 	json_set!(&mut login_msg; "index"; index);
 	json_set!(&mut login_msg; "userId"; format!("test00{}", index));
 	man_sx.send(login_msg);
-	
+	*/
+	/*
+	let rec = rec.lock().unwrap();
     loop {
+    		let rst = rec.try_recv();
+    		match rst {
+    			Ok(msg) => {
+    				info!("{}", msg);		
+    			},
+    			Err(_) => {
+    				
+    			}
+    		}
     		let rst = stream.read(&mut buf);
     		match rst {
     			Ok(size) => {
@@ -103,6 +176,7 @@ fn handle_client(mut stream: TcpStream, rec:Arc<Mutex<Receiver<Msg>>>, man_sx:Se
     		}
     }
 	//connection is not available any more.
+	*/
 }
 
 fn main() {
@@ -137,6 +211,11 @@ fn main() {
         					
         					for (key, value) in user_map.iter() {
         						info!("{} is online...", key);
+        						
+        						let mut send_msg = json!("{}");
+							json_set!(&mut send_msg; "head"; "{}");
+							json_set!(&mut send_msg; "body"; "{}");
+        						let _ = value.send(send_msg);
         					}
         				}
         			},

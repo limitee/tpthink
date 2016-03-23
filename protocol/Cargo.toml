@@ -1,5 +1,5 @@
 [package]
-name = "scheduler"
+name = "protocol"
 version = "0.0.1"
 authors = ["ming li"]
 
@@ -18,8 +18,8 @@ easy_config = {git = "https://limitee:20131988lm@github.com/limitee/easy_config.
 
 dc = {version="0.0.1", path="../dc"}
 util = {version="0.0.1", path="../util"}
-elog = {version="0.0.1", path="../elog"}
 cons = {version="0.0.1", path="../cons"}
+elog = {version="0.0.1", path="../elog"}
 service = {version="0.0.1", path="../service"}
 
 game = {version="0.0.1", path="../game"}
