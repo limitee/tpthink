@@ -21,6 +21,7 @@ use std::str::FromStr;
 #[macro_use]
 extern crate log;
 extern crate elog;
+
 #[macro_use]
 extern crate easy_config;
 use easy_config::CFG;
@@ -56,4 +57,15 @@ fn main() {
 		info!("body:{}", body);
 		Result::Ok(())
 	});
+	loop {
+		let rst = pro.rec_msg();
+		let rst = rst.and_then(|(head, body)|{
+			info!("head:{}", head);
+			info!("body:{}", body);
+			Result::Ok(())
+		});
+		if rst.is_err() {
+			break;
+		}
+	}
 }

@@ -23,6 +23,26 @@ use self::util::DigestUtil;
 extern crate chrono;
 use chrono::*;
 
+pub struct ProtocolHelper;
+
+impl ProtocolHelper {
+	
+	pub fn get_msg_head(cmd: &str, key: &str, body: &str) -> String {
+		let mut head = json!("{}");
+		json_set!(&mut head; "cmd"; cmd);
+		json_set!(&mut head; "userId"; "test001");
+		let time_stamp = Local::now().to_string();
+		json_set!(&mut head; "timeStamp"; time_stamp);
+	    let digest_content = format!("{}{}{}", key, body, time_stamp);
+	    let digest = DigestUtil::md5(&digest_content);
+	    json_set!(&mut head; "digestType"; "md5");
+	    json_set!(&mut head; "digest"; digest);
+	    
+	    head.to_string()
+	}
+	
+}
+
 pub struct Protocol {
 	stream:TcpStream,
 	rec_buffer: Vec<u8>, 
@@ -109,20 +129,7 @@ impl Protocol {
 	
 	pub fn send_body(&mut self, cmd:&str, body:&Json) -> Result<(), Error> {
 		let body_str = body.to_string();
-		
-		let mut head = json!("{}");
-		json_set!(&mut head; "cmd"; cmd);
-		json_set!(&mut head; "userId"; "test001");
-		let time_stamp = Local::now().to_string();
-		json_set!(&mut head; "timeStamp"; time_stamp);
-	    let digest_content = format!("{}{}{}", self.key, body, time_stamp);
-	    let digest = DigestUtil::md5(&digest_content);
-	    json_set!(&mut head; "digestType"; "md5");
-	    json_set!(&mut head; "digest"; digest);
-	    
-	    let head_str = head.to_string();
-	    
+	    let head_str = ProtocolHelper::get_msg_head(cmd, &self.key, &body_str);
 		self.send(head_str, body_str)
 	}
-	
 }

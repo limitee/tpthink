@@ -50,4 +50,3 @@ impl TimeUtil {
         now.sec
     }
 }
-
