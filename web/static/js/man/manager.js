@@ -14,22 +14,12 @@ var Com = function(config) {
 Com.prototype.init = function() {
     var self = this;
 
-    self.dom_room_type_list = $('#room_type');
+    self.dom_room_type_list = $('#doc_list');
     self.dom_room_type_list.on('click', function(e) {
-        CurSite.to_page(self.cr.main, "man_room_typelist");
+        CurSite.to_page(self.cr.main, "man_doc_list");
     });
 
-    self.dom_add_room_type = $('#add_room_type');
-    self.dom_add_room_type.on('click', function(e) {
-        CurSite.to_page(self.cr.main, "man_room_addtype");
-    });
-
-    self.dom_my_files = $('#hotel_list');
-    self.dom_my_files.on('click', function(e) {
-        CurSite.to_page(self.cr.main, "man_hotel_list");
-    });
-
-    CurSite.to_page(self.cr.main, "man_hotel_list");
+    //CurSite.to_page(self.cr.main, "man_hotel_list");
 }
 
 return Com;

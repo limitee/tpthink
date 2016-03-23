@@ -89,6 +89,7 @@ name = "dc"
 version = "0.0.1"
 dependencies = [
  "chrono 0.2.20 (registry+https://github.com/rust-lang/crates.io-index)",
+ "easy_config 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_config.git)",
  "easy_util 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easy_util.git)",
  "easydb 0.0.1 (git+https://limitee:20131988lm@github.com/limitee/easydb.git)",
  "elog 0.0.1",

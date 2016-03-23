@@ -279,6 +279,18 @@ impl<T:DbPool> DataBase<T> {
             let table = DataBase::get_table_define("customer", vec, dc);
             table_list.insert(table.name.clone(), table);
         }
+        {
+        		let dc = dc.clone();
+        		let vec = vec![
+                Column::new("id", "bigint", -1, "not null", false),
+                Column::new("customer_id", "bigint", -1, "default -1", false),
+                Column::new("title", "varchar", 200, "not null", true),
+                Column::new("context", "text", -1, "not null", true),
+                Column::new("create_time", "bigint", -1, "default -1", false),
+            ];
+            let table = DataBase::get_table_define("document", vec, dc);
+            table_list.insert(table.name.clone(), table);
+        }
         {   //hotel
             let dc = dc.clone();
             let vec = vec![
