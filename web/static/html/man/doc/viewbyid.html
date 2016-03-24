@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link href="./css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="./css/bootstrap-theme.min.css" rel="stylesheet"/>
+        <link href="./css/site.css" rel="stylesheet"/>
+
+        <!--[if lt IE 9]>
+        <script src="./js/html5shiv.min.js"></script>
+        <script src="./js/respond.min.js"></script>
+        <![endif]-->
+
+        <style type="text/css">
+            @media (min-width:992px){
+                .container{width:970px}
+                body {
+                    font-size: 18px;
+                }
+                .head_top {
+                    padding-top:30px;
+                }
+            }
+            @media (min-width:1200px) {
+                .container {
+                    width:1170px
+                }
+                body {
+                    font-size: 20px;
+                }
+                .head_top {
+                    padding-top:60px;
+                }
+            }
+            @media (min-width: 2000px) {
+                .container {
+                    width: 1920px;
+                }
+                body {
+                    font-size: 48px;
+                }
+                .head_top {
+                    padding-top:120px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+    <div class="navbar-top navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+            </div>
+        </div>
+    </div>
+    <div id="title" class="container" style="text-align:center;margin-top: 62px;font-size: 32px;">
+    </div>
+    <div id="content" class="container">
+    </div>
+
+        <script type="text/javascript" src="./js/cryptojs/rollups/md5.js"></script>
+        <script type="text/javascript" src="./js/cryptojs/components/enc-base64.js"></script>
+        <script type="text/javascript" src="./js/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./js/site.js"></script>
+        <script type="text/javascript" src="./js/mkdown/index.js"></script>
+
+        <script type="text/javascript">
+            CurSite.get_js("./man/doc/viewbyid.js", function(err, data){
+                var f = new Function(data);
+                var com = {};
+                com.DEFINE = f();
+                com.ins = new com.DEFINE({parent:$("body")});
+                CurSite.IMPL.ROOT = com;
+            });
+        </script>
+
+    </body>
+</html>

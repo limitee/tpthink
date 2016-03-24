@@ -22,8 +22,18 @@ Com.prototype.init = function() {
         var url = $(this).attr("url");
         $(this).addClass("active");
 
+        self.cr.main.add = {};
         CurSite.to_page(self.cr.main, url);
     });
+}
+
+Com.prototype.edit_doc = function(doc_id) {
+    var self = this;
+    var add = {
+        doc_id: doc_id
+    }
+    self.cr.main.add = add;
+    CurSite.to_page(self.cr.main, "man_doc_add");
 }
 
 return Com;

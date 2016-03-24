@@ -67,18 +67,24 @@ Com.prototype.init_event = function() {
             });
         }
     });
+
+    self.dom_set_list.find('a[flag="edit"]').on("click", function(e) {
+        var id = parseInt($(this).attr("t_id"));
+        self.config.pins.edit_doc(id);
+    });
 }
 
 Com.prototype.get_table = function(data) {
     var self = this;
     var html = '<table class="table table-striped table-bordered table-hover">';
-    html += '<thead><tr><td>名称</td><td>类型</td><td>大小</td><td>创建时间</td><td>操作</td></tr></thead>';
+    html += '<thead><tr><td>标题</td><td>创建时间</td><td>操作</td></tr></thead>';
     html += '<tbody>';
     for(var i = 0; i < data.length; i++) {
         html += '<tr>'
-        html += '<td>' + data[i].name + '</td><td>' + data[i].type + '</td><td>' + data[i].size + '</td><td>' + CurSite.getDateStr(data[i].create_time*1000) + '</td>';
+        html += '<td>' + data[i].title + '</td><td>' + CurSite.getDateStr(data[i].create_time*1000) + '</td>';
         html += '<td>'
-        html += '<a target="_blank" href="http://localhost:4000/api/file/' + data[i].id + '">下载</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+        html += '<a target="_blank" href="./man_doc_viewbyid.html?id=' + data[i].id + '">打开</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+        html += '<a flag="edit" t_id="' + data[i].id + '">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
         html += '<a file_id="' + data[i].id + '" flag="delete">删除</a>';
         html += '</td>'
         html += '</tr>'

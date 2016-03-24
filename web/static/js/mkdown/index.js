@@ -330,7 +330,6 @@ MkDown.prototype.to_html = function(content) {
                 in_ul = true;
                 var node = TreeNode.inst(line.substr(2), 0);
                 ul_content += '<li>' + node.to_html() + '</li>';
-                console.log(ul_content);
                 if(i >= lines.length - 1 || !(MkDown.start_with(lines[i + 1], '- ') || MkDown.start_with(lines[i + 1], '* '))) {
                     in_ul = false;
                     rst += '<ul>' + ul_content + '</ul>';

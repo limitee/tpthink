@@ -334,7 +334,9 @@ impl Handler for SenderHandler {
     fn handle(&self, req: Request, res: Response) {
         let uri_type = match req.uri {
             RequestUri::AbsolutePath(ref path) => {
-                println!("the path is {}.", path);
+                info!("the path is {}.", path);
+                let mut path_array:Vec<&str> = path.split('?').collect();
+                let path = path_array.remove(0);
                 if path == "/" {
                     UriType::HtmlFile("/index.html".to_string())
                 }

@@ -184,7 +184,7 @@ fn handle_client(mut stream: TcpStream, rec:Arc<Mutex<Receiver<Msg>>>, man_sx:Se
 
 fn main() {
 	let _ = elog::init();
-	let mut sev = Server::new("127.0.0.1:8888");
+	let mut sev = Server::new("0.0.0.0:8888");
 	sev.start();
 	/*
 	let listener = TcpListener::bind("127.0.0.1:8888").unwrap();

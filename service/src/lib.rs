@@ -62,6 +62,8 @@ impl ApiFactory {
         add_inter!(map, "ART01", ART01);
         add_inter!(map, "A01", A01);
         add_inter!(map, "AD01", AD01);
+        add_inter!(map, "AD02", AD02);
+        add_inter!(map, "AD03", AD03);
         add_inter!(map, "AH01", AH01);
         add_inter!(map, "F01", F01);
         add_inter!(map, "F02", F02);

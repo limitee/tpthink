@@ -9,12 +9,25 @@ if(port && port.length > 0)
 CurSite.getContextPath = function() {
     return "";
 };
+CurSite.getPathArgs = function() {
+    var search = window.document.location.search;
+    var s_array = search.split('?');
+    var args = {};
+    if(s_array.length >= 2) {
+        var arg_str = s_array[1];
+        var arg_str_array = arg_str.split("&");
+        for(var i = 0; i < arg_str_array.length; i++) {
+            var set = arg_str_array[i].split("=");
+            args[set[0]] = set[1];
+        }
+    }
+    return args;
+}
 CurSite.loadFlag = {};  //组件加载标识
 CurSite.conextPath = CurSite.getContextPath();
 CurSite.getAbsolutePath = function(url) {
     return CurSite.site + CurSite.conextPath + "/" + url;
 };
-CurSite.interPath = CurSite.getAbsolutePath("filter/interface.htm");
 
 CurSite.COMP = {};  //组件定义
 CurSite.IMPL = {};  //组件实现
@@ -182,6 +195,7 @@ CurSite.get_html = function(url, params, cb)
     var self = this;
     $.ajax({
         url:url,
+        async: false,
         type:'GET',
         success:function(data) {
             cb(null, data);
@@ -207,6 +221,7 @@ CurSite.postUnDigest = function(head, body, cb)
         data:msgNode,
         type:'post',
         cache:false,
+        async: false,
         dataType:'json',
         success:function(data) {
             var backBodyStr = data.body;
@@ -251,6 +266,7 @@ CurSite.postDigest = function(head, body, cb)
         data:msgNode,
         type:'post',
         cache:false,
+        async: false,
         dataType:'json',
         success:function(data) {
             var backBodyStr = data.body;
@@ -276,6 +292,7 @@ CurSite.get_js = function(path, cb)
     $.ajax({
         url:api_path,
         type:'get',
+        async: false,
         success:function(data) {
             cb(null, data);
         },
