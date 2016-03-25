@@ -25,13 +25,13 @@ fn main() {
     let my_pool:MyDbPool = MyDbPool::new(dsn, cfg_i64!("db", "conn_limit") as u32);
     let my_db = DataBase::new("main", Arc::new(my_pool));
 	
-    let rst = my_db.execute("select * from forder");
+    let rst = my_db.execute("select * from customer");
     let _ = rst.and_then(|json| {
         println!("{}", json);
         Result::Ok(())
     });
     
-    let _ = my_db.stream("select * from forder", |json| {
+    let _ = my_db.stream("select * from customer", |json| {
         println!("{}", json);
         true
     });

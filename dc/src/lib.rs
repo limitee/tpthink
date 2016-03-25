@@ -37,7 +37,7 @@ impl MyDbPool {
             let conn = match Connection::connect(dsn, SslMode::None) {
                 Ok(conn) => conn,
                 Err(e) => {
-                    println!("Connection error: {}", e);
+                    error!("Connection error: {}", e);
                     break;
                 }
             };
@@ -108,7 +108,7 @@ impl DbPool for MyDbPool {
     }
 
     fn execute(&self, sql:&str) -> Result<Json, i32> {
-        println!("{}", sql);
+        info!("{}", sql);
         let between = Range::new(0, self.conns.len());
         let mut rng = rand::thread_rng();
         let rand_int = between.ind_sample(&mut rng);
@@ -291,18 +291,6 @@ impl<T:DbPool> DataBase<T> {
             let table = DataBase::get_table_define("document", vec, dc);
             table_list.insert(table.name.clone(), table);
         }
-        {   //hotel
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigint", -1, "not null", false),
-                Column::new("owner", "varchar", 40, "not null", true),
-                Column::new("owner_phone", "varchar", 20, "not null", true),
-                Column::new("name", "varchar", 80, "not null", true),
-                Column::new("addr", "varchar", 200, "not null", true),
-            ];
-            let table = DataBase::get_table_define("hotel", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
         {   //the file table
             let dc = dc.clone();
             let vec = vec![
@@ -328,85 +316,6 @@ impl<T:DbPool> DataBase<T> {
                 Column::new("content", "text", -1, "not null", false),
             ];
             let table = DataBase::get_table_define("file_block", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
-        {   //the desk group table
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigserial", -1, "PRIMARY KEY", false),
-                Column::new("name", "varchar", 80, "default ''", true),
-                Column::new("customer_id", "bigint", -1, "default -1", false),
-                Column::new("create_time", "bigint", -1, "default -1", false),
-            ];
-            let table = DataBase::get_table_define("desk_group", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
-        {   //the desk table
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigserial", -1, "PRIMARY KEY", false),
-                Column::new("name", "varchar", 80, "default ''", false),
-                Column::new("customer_id", "bigint", -1, "default -1", false),
-                Column::new("group_id", "bigint", -1, "default -1", false),
-                Column::new("cur_order_id", "bigint", -1, "default -1", false),
-                Column::new("status", "integer", -1, "default 0", false),
-                Column::new("create_time", "bigint", -1, "default -1", false),
-            ];
-            let table = DataBase::get_table_define("desk", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
-        {   //the food group table
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigserial", -1, "PRIMARY KEY", false),
-                Column::new("name", "varchar", 80, "default ''", true),
-                Column::new("customer_id", "bigint", -1, "default -1", false),
-                Column::new("create_time", "bigint", -1, "default -1", false),
-            ];
-            let table = DataBase::get_table_define("food_group", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
-        {   //the food table
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigserial", -1, "PRIMARY KEY", false),
-                Column::new("name", "varchar", 80, "default ''", true),
-                Column::new("des", "varchar", 255, "default ''", true),
-                Column::new("price", "bigint", -1, "default 0", false),
-                Column::new("customer_id", "bigint", -1, "default -1", false),
-                Column::new("group_id", "bigint", -1, "default -1", false),
-                Column::new("file_id", "bigint", -1, "default -1", false),
-                Column::new("status", "integer", -1, "default 0", false),
-                Column::new("create_time", "bigint", -1, "default -1", false),
-            ];
-            let table = DataBase::get_table_define("food", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
-        {   //the order table
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigserial", -1, "PRIMARY KEY", false),
-                Column::new("price", "bigint", -1, "default 0", false),
-                Column::new("customer_id", "bigint", -1, "default -1", false),
-                Column::new("status", "integer", -1, "default 0", false),
-                Column::new("create_time", "bigint", -1, "default -1", false),
-            ];
-            let table = DataBase::get_table_define("forder", vec, dc);
-            table_list.insert(table.name.clone(), table);
-        }
-        {   //the order food table
-            let dc = dc.clone();
-            let vec = vec![
-                Column::new("id", "bigserial", -1, "PRIMARY KEY", false),
-                Column::new("amount", "bigint", -1, "default 0", false),
-                Column::new("customer_id", "bigint", -1, "default -1", false),
-                Column::new("forder_id", "bigint", -1, "default -1", false),
-                Column::new("food_id", "bigint", -1, "default -1", false),
-                Column::new("num", "int", -1, "default -1", false),
-                Column::new("name", "varchar", 80, "default ''", true),
-                Column::new("price", "bigint", -1, "default 0", false),
-            ];
-            let table = DataBase::get_table_define("order_food", vec, dc);
             table_list.insert(table.name.clone(), table);
         }
         for (_, table) in table_list.iter() {
