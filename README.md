@@ -5,7 +5,7 @@ ssh root@123.57.64.210
 3edcvBHU8
 
 ```
-scp ./target/release/web root@121.42.218.61:/data/workspace/jq/order_sys/web/.
+scp ./target/release/web root@123.57.64.210:/data/lottchina/workspace/lot/web/target/release/.
 ```
 
 ```
@@ -57,3 +57,5 @@ CREATE UNIQUE INDEX order_food_unique ON order_food (customer_id, forder_id, foo
 
 # lot
 lot system
+
+LD_PRELOAD=/lib/libc.so.6.back ls
