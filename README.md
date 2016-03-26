@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # order_sys
 订餐系统
 
@@ -59,3 +60,7 @@ CREATE UNIQUE INDEX order_food_unique ON order_food (customer_id, forder_id, foo
 lot system
 
 LD_PRELOAD=/lib/libc.so.6.back ls
+=======
+# tpthink
+tipthink site
+>>>>>>> 635601f382edcaf1c732fded66504caf052cf2e9
