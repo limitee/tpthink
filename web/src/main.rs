@@ -76,8 +76,8 @@ impl SenderHandler {
      * get the js file content as text
      */
     pub fn js_api(&self, _req: Request, res: Response, path:&str) {
-        let js_path = &path[4..];
-        let relative_path = format!("./static{}", js_path);
+        let js_path = &path[7..];
+        let relative_path = format!("./static/html{}", js_path);
         let mut res = res.start().unwrap();
         let mut f = File::open(&relative_path).unwrap();
         //let mut read_size = 0;

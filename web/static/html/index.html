@@ -16,7 +16,9 @@
 
 </head>
     <body>
-        
+        <div id="root_container" class="container no_space">
+            hello world.
+        </div>
         <script type="text/javascript" src="./js/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="./js/jquery.DB.min.js"></script>
         <script type="text/javascript" src="./js/cryptojs/rollups/tripledes.js"></script>
@@ -24,17 +26,15 @@
         <script type="text/javascript" src="./js/cryptojs/components/enc-base64.js"></script>
         <script type="text/javascript" src="./js/cryptojs/components/mode-cfb.js"></script>
         <script type="text/javascript" src="./js/cryptojs/components/pad-nopadding.js"></script>
+        <script type="text/javascript" src="./js/juicer-min.js"></script>
+        <script type="text/javascript" src="./js/com/async.js"></script>
+        <script type="text/javascript" src="./js/com/index.js"></script>
         <script type="text/javascript" src="./js/site.js"></script>
 
         <script type="text/javascript">
-            CurSite.get_js("index.js", function(err, data){
-                var f = new Function(data);
-                var com = {};
-                com.DEFINE = f();
-                com.ins = new com.DEFINE({parent:null});
-                CurSite.IMPL.ROOT = com;
+            new Com({id:"root_container", path:"index.main", pins:null}, function(err, c){
+                console.log(c)
             });
         </script>
-
     </body>
 </html>
