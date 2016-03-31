@@ -31,6 +31,10 @@ Com.prototype.init = function(cb) {
             var Define = new Function(js);
             self.Define = Define();
             self.ins = new self.Define();
+            if(!self.ins.data) {
+                self.ins.data = {};
+            }
+            self.ins.data.index = self.index;   //设置组件序号,单页面内组件的id应该是唯一的
             self.ins.com = self;
             if(self.ins.init) {
                 self.ins.init(function(err, data){
@@ -46,7 +50,9 @@ Com.prototype.init = function(cb) {
             })
         }
     ], function(err, data){
-        cb(err, self.ins);
+        if(cb) {
+            cb(err, self.ins);
+        }
     })
 }
 
@@ -55,17 +61,21 @@ Com.prototype.refresh = function(cb) {
     async.waterfall([
         function(cb) {  //渲染界面,并绑定事件
             var data = self.ins.data;
-            data.index = self.index;    //组件的序号,单页面内组件的id应该是唯一的
             var html = juicer(self.tpl, data);
             var node = $(html);
-            self.ins.get_event_list(function(err, event_list){
-                for(var key in event_list) {
-                    var set = event_list[key];
-                    node.find(set.id).on(set.on, set.do);
-                }
+            if(self.ins.get_event_list) {
+                self.ins.get_event_list(function(err, event_list){
+                    for(var key in event_list) {
+                        var set = event_list[key];
+                        node.find(set.id).on(set.on, set.do);
+                    }
+                    self.parent.html(node);
+                    cb(null)
+                })
+            } else {
                 self.parent.html(node);
                 cb(null)
-            })
+            }
         },
         function(cb) {      //页面加载完成事件
             if(self.ins.page_loaded) {
