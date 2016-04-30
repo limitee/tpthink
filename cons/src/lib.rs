@@ -1,5 +1,7 @@
+#[macro_use]
 mod err;
 pub use err::ApiErr;
+pub use err::AEF;
 
 #[macro_use]
 extern crate lazy_static;

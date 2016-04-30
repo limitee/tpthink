@@ -17,7 +17,7 @@ use self::regex::Regex;
 
 extern crate time;
 
-use super::super::inter::{DataApi, KeyResult, CheckResult, RunResult};
+use super::super::inter::{DataApi, KeyInfo, KeyResult, CheckInfo, CheckResult, RunResult};
 use super::super::sv_util::{KeyHelper};
 
 //user register
@@ -26,11 +26,12 @@ pub struct U01;
 impl DataApi for U01 {
 
     fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> KeyResult {
-        Result::Ok(DigestUtil::empty_key())
+        let key = DigestUtil::empty_key(); 
+        Result::Ok(KeyInfo::from_key(key))
     }
 
     fn check(&self, db:&DataBase<MyDbPool>, msg:&Json) -> CheckResult {
-        Result::Ok(0)
+        Result::Ok(CheckInfo::ok())
     }
 
     fn run(&self, db:&DataBase<MyDbPool>, msg:&Json) -> RunResult {

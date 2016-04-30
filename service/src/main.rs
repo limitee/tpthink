@@ -11,6 +11,7 @@ extern crate easy_util;
 extern crate rustc_serialize;
 use rustc_serialize::json::Json;
 use rustc_serialize::json::ToJson;
+use std::str::FromStr;
 
 fn main() {
     let dsn = "postgresql://postgres:1988lm@localhost/order_sys";

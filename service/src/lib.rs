@@ -15,8 +15,9 @@ extern crate dc;
 use self::dc::DataBase;
 use self::dc::MyDbPool;
 
+#[macro_use]
 extern crate cons;
-use self::cons::ErrCode;
+use cons::*;
 
 extern crate time;
 
@@ -24,7 +25,7 @@ extern crate regex;
 use self::regex::Regex;
 
 pub mod inter;
-use self::inter::{DataApi};
+use self::inter::{DataApi, KeyResult, CheckResult, RunResult};
 
 mod sv_util;
 use self::sv_util::{KeyHelper};
@@ -34,16 +35,7 @@ extern crate log;
 extern crate elog;
 
 mod ment;
-use self::ment::admin_room::*;
-use self::ment::admin_doc::*;
 use self::ment::user::*;
-use self::ment::admin::*;
-use self::ment::hotel::*;
-use self::ment::hotel_desk::*;
-use self::ment::hotel_food::*;
-use self::ment::hotel_order::*;
-use self::ment::admin_hotel::*;
-use self::ment::file::*;
 
 macro_rules! add_inter {
     ($o:expr, $k:expr, $v:expr) => {{
@@ -67,54 +59,53 @@ impl ApiFactory {
     /**
      * get the digest key by head.
      */
-    pub fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> Result<KeyResult, i32> {
+    pub fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> KeyResult {
         let name = json_str!(head; "cmd");
-        let api = self.map.get(name).unwrap();
-        api.get_key(db, head)
+        let api_op = self.map.get(name);
+        match api_op {
+            Some(api) => {
+                api.get_key(db, head)
+            },
+            None => {
+                Result::Err(api_err!("api_not_exist"))
+            },
+        }
     }
 
     /**
      * check the digest. If success return Some, else return None.
      */
-    pub fn check(&self, db:&DataBase<MyDbPool>, param:&BTreeMap<String, String>) -> Result<Json, i32> {
+    pub fn check_digest(&self, db:&DataBase<MyDbPool>, param:&BTreeMap<String, String>) -> Result<Json, ApiErr> {
         let head = param.get("head").unwrap();
         let head_node = json!(head);
         let digest = json_str!(&head_node; "digest");
         let time_stamp = json_str!(&head_node; "timeStamp");
 
         let key_rst = self.get_key(db, &head_node);
-        key_rst.and_then(|key| {
+        key_rst.and_then(|key_info| {
             let body_str = param.get("body").unwrap();
-            let digest_content = format!("{}{}{}", key, body_str, time_stamp);
+            let digest_content = format!("{}{}{}", key_info.key, body_str, time_stamp);
             if digest == DigestUtil::md5(&digest_content) {
                 let body_node = json!(body_str);
                 let mut back_obj = json!("{}");
                 json_set!(&mut back_obj; "head"; head_node.clone());
                 json_set!(&mut back_obj; "body"; body_node);
-                json_set!(&mut back_obj; "key"; key);
+                json_set!(&mut back_obj; "key"; key_info.key);
                 Result::Ok(back_obj)
             }
             else
             {
-                Result::Err(ErrCode::DigestFailure as i32)
+                Result::Err(api_err!("digest_failure"))
             }
         })
     }
 
-    pub fn run(&self, db:&DataBase<MyDbPool>, msg:&Json) -> Result<Json, i32> {
+    pub fn run(&self, db:&DataBase<MyDbPool>, msg:&Json) -> RunResult {
         let name = json_str!(msg; "head", "cmd");
-        let api_op = self.map.get(name);
-        match api_op {
-            Some(api) => {
-                api.check(db, msg).and_then(|_|{
-                    api.run(db, msg)
-                })
-            },
-            None => {
-                error!("api not exist.....");
-                Result::Err(ErrCode::ApiNotExits as i32)
-            },
-        }
+        let api = self.map.get(name).unwrap();
+        api.check(db, msg).and_then(|_|{
+            api.run(db, msg)
+        })
     }
 
     pub fn back(&self, msg:&Json, body:String) -> Json {

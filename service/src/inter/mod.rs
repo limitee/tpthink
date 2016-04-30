@@ -8,11 +8,33 @@ use self::dc::MyDbPool;
 extern crate cons;
 use cons::ApiErr;
 
-pub type KeyInfo = (String);
+pub struct KeyInfo {
+    pub key:String,
+}
+
+impl KeyInfo {
+
+    //get KeyInfo from key
+    pub fn from_key(key:String) -> KeyInfo {
+        KeyInfo {
+            key:key
+        }
+    }
+}
 
 pub type KeyResult = Result<KeyInfo, ApiErr>;
 
-pub type CheckInfo = (String);
+pub struct CheckInfo;
+
+impl CheckInfo {
+    
+    //just a ok flag
+    pub fn ok() -> CheckInfo {
+        CheckInfo {
+        }
+    }
+
+}
 
 pub type CheckResult = Result<CheckInfo, ApiErr>;
 
@@ -22,10 +44,10 @@ pub type RunResult = Result<Json, ApiErr>;
 pub trait DataApi: Send + Sync {
 
     //check the body params
-    fn check(&self, db:&DataBase<MyDbPool>, msg:&Json) -> KeyResult;
+    fn check(&self, db:&DataBase<MyDbPool>, msg:&Json) -> CheckResult;
 
     //get the user's key
-    fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> CheckResult;
+    fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> KeyResult;
 
     //do the job
     fn run(&self, db:&DataBase<MyDbPool>, msg:&Json) -> RunResult;
