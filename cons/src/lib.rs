@@ -1,3 +1,6 @@
+mod err;
+pub use err::ApiErr;
+
 #[macro_use]
 extern crate lazy_static;
 

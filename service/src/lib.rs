@@ -59,34 +59,6 @@ impl ApiFactory {
 
     pub fn new() -> ApiFactory {
         let mut map = BTreeMap::new();
-        add_inter!(map, "ART01", ART01);
-        add_inter!(map, "A01", A01);
-        add_inter!(map, "AD01", AD01);
-        add_inter!(map, "AD02", AD02);
-        add_inter!(map, "AD03", AD03);
-        add_inter!(map, "AH01", AH01);
-        add_inter!(map, "F01", F01);
-        add_inter!(map, "F02", F02);
-        add_inter!(map, "F03", F03);
-        add_inter!(map, "F04", F04);
-        add_inter!(map, "H01", H01);
-        add_inter!(map, "H02", H02);
-        add_inter!(map, "HD01", HD01);
-        add_inter!(map, "HD02", HD02);
-        add_inter!(map, "HD03", HD03);
-        add_inter!(map, "HD04", HD04);
-        add_inter!(map, "HD05", HD05);
-        add_inter!(map, "HD06", HD06);  //delete the desk
-        add_inter!(map, "HF01", HF01);
-        add_inter!(map, "HF02", HF02);
-        add_inter!(map, "HF03", HF03);
-        add_inter!(map, "HF04", HF04);  //add food
-        add_inter!(map, "HF05", HF05);  //get food list
-        add_inter!(map, "HO01", HO01);  //点餐
-        add_inter!(map, "HO02", HO02);  //点餐(添加菜品)
-        add_inter!(map, "HO03", HO03);  //获得订单详情
-        add_inter!(map, "HO04", HO04);  //结束订单
-        add_inter!(map, "U01", U01);
         ApiFactory {
             map:map,
         }
@@ -95,7 +67,7 @@ impl ApiFactory {
     /**
      * get the digest key by head.
      */
-    pub fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> Result<String, i32> {
+    pub fn get_key(&self, db:&DataBase<MyDbPool>, head:&Json) -> Result<KeyResult, i32> {
         let name = json_str!(head; "cmd");
         let api = self.map.get(name).unwrap();
         api.get_key(db, head)
