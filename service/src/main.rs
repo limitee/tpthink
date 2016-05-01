@@ -14,7 +14,7 @@ use rustc_serialize::json::ToJson;
 use std::str::FromStr;
 
 fn main() {
-    let dsn = "postgresql://postgres:1988lm@localhost/order_sys";
+    let dsn = "postgresql://postgres:1988lm@localhost/tpthink";
     let my_pool:MyDbPool = MyDbPool::new(dsn, 1);
     let my_db = DataBase::new("main", Arc::new(my_pool));
     let table = my_db.get_table("customer").unwrap();

@@ -1,5 +1,5 @@
 extern crate dc;
-use dc::{MyDbPool, DataBase};
+use dc::{MyDbPool, DataBase, stream};
 
 use std::sync::Arc;
 
@@ -14,8 +14,8 @@ use easy_config::CFG;
 #[macro_use]
 extern crate easy_util;
 extern crate rustc_serialize;
-use self::rustc_serialize::json::Json;
-use self::rustc_serialize::json::ToJson;
+use rustc_serialize::json::Json;
+use rustc_serialize::json::ToJson;
 use std::str::FromStr;
 
 fn main() {
@@ -31,7 +31,9 @@ fn main() {
         Result::Ok(())
     });
     
-    let _ = my_db.stream("select * from customer", |json| {
+    let conn = my_db.get_connection().unwrap();
+    let _ = stream(conn, "select * from customer", move |json| {
+        //let rst = my_db.execute("select * from customer");
         println!("{}", json);
         true
     });

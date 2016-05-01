@@ -1,7 +1,7 @@
 {
   "target": "dev",
   "db": {
-    "dsn":"postgresql://postgres:1988lm@localhost/tipthink",
+    "dsn":"postgresql://postgres:1988lm@localhost/tpthink",
     "conn_limit": 5
   },
   "hyper": {
