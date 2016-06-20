@@ -9,6 +9,9 @@ extern crate lazy_static;
 use std::collections::BTreeMap;
 use std::sync::{Arc};
 
+#[macro_use]
+extern crate rustc_serialize;
+
 pub enum ErrCode {
     Success = 0,
 

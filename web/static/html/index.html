@@ -16,9 +16,9 @@
 
 </head>
     <body>
-        <div id="root_container" class="container no_space">
-            hello world.
+        <div id="root_container" style="width:800px;height:600px;">
         </div>
+        <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=deb5a03073648e511922729cc6436b04"></script> 
         <script type="text/javascript" src="./js/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="./js/jquery.DB.min.js"></script>
         <script type="text/javascript" src="./js/cryptojs/rollups/tripledes.js"></script>
@@ -32,9 +32,13 @@
         <script type="text/javascript" src="./js/site.js"></script>
 
         <script type="text/javascript">
-            new Com({id:"root_container", path:"index.main", pins:null}, function(err, c){
-                console.log(c)
-            });
+             var map = new AMap.Map('root_container');
+             AMap.plugin(['AMap.ToolBar','AMap.Scale'],function(){
+                 var toolBar = new AMap.ToolBar();
+                 var scale = new AMap.Scale();
+                 map.addControl(toolBar);
+                 map.addControl(scale);
+             });
         </script>
     </body>
 </html>

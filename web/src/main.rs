@@ -177,7 +177,7 @@ impl SenderHandler {
         for (key, value) in kv {
             req_map.insert(key, value);
         }
-        let back = match self.api.check(&(self.db), &req_map) {
+        let back = match self.api.check_digest(&(self.db), &req_map) {
             Ok(ref msg) => {
                 let uuid = json_str!(msg; "body", "uuid");
                 let mut body_json = self.api.run(&(self.db), msg).unwrap();

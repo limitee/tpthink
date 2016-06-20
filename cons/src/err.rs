@@ -1,5 +1,8 @@
 use std::fmt;
-use std::collections::HashMap;
+use std::collections::{HashMap, BTreeMap};
+
+extern crate rustc_serialize;
+use rustc_serialize::json::{ToJson, Json};
 
 #[derive(Copy, Clone)]
 pub struct ApiErr {
@@ -11,6 +14,23 @@ pub struct ApiErr {
 impl fmt::Display for ApiErr {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "({}, {}, {})", self.id, self.code, self.des)
+    }
+}
+
+impl fmt::Debug for ApiErr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {}, {})", self.id, self.code, self.des)
+    }
+}
+
+impl ToJson for ApiErr {
+    
+    fn to_json(&self) -> Json {
+        let mut map = BTreeMap::new();
+        map.insert("id".to_string(), self.id.to_json());
+        map.insert("code".to_string(), self.code.to_json());
+        map.insert("des".to_string(), self.des.to_json());
+        Json::Object(map)
     }
 }
 
